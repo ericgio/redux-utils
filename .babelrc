@@ -1,0 +1,38 @@
+{
+  "presets": [
+    ["@babel/preset-env", {
+      "modules": false,
+      "loose": true,
+    }],
+    "@babel/preset-flow",
+  ],
+  "plugins": [
+    "@babel/plugin-proposal-class-properties",
+    "@babel/plugin-proposal-export-default-from",
+  ],
+  "env": {
+    "cjs": {
+      "plugins": [
+        "@babel/transform-runtime",
+        "@babel/transform-modules-commonjs"
+      ],
+      "ignore": [
+        "**/__tests__/*",
+      ],
+    },
+    "es": {
+      "plugins": [
+        "@babel/transform-runtime"
+      ],
+      "ignore": [
+        "**/__tests__/*",
+      ],
+    },
+    "test": {
+      "plugins": [
+        "@babel/transform-runtime",
+        "@babel/transform-modules-commonjs"
+      ],
+    },
+  },
+}

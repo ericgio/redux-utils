@@ -1,0 +1,23 @@
+{
+  "env": {
+    "browser": true,
+    "jest": true,
+  },
+  "extends": [
+    "eslint-config-ericgio-base",
+    "plugin:flowtype/recommended"
+  ],
+  "globals": {},
+  "parser": "babel-eslint",
+  "plugins": [
+    "flowtype"
+  ],
+  "settings": {
+    "flowtype": {
+      "onlyFilesWithFlowAnnotation": true
+    },
+    "react": {
+      "flowVersion": "0.107"
+    }
+  }
+}

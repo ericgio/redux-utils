@@ -1,0 +1,6 @@
+{
+  "hooks": {
+    "pre-commit": "lint-staged && flow",
+    "pre-push": "npm run check"
+  }
+}
