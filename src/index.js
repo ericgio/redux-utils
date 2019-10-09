@@ -1,7 +1,7 @@
 // @flow
 
 import type { Action, Dispatch, Reducer } from 'redux';
-import type { ActionType, ActionTypeMap, ErrorsState, RequestsState, Types } from './types';
+import type { ActionType, ActionTypeMap, ErrorAction, ErrorsState, RequestsState, Types } from './types';
 
 /**
  * Constants/ActionTypes
@@ -65,16 +65,24 @@ export function genActionTypes(types: ActionType[]): ActionTypeMap {
 /**
  * Action Creators
  */
-export const clearErrors = () => (dispatch: Dispatch): void => dispatch({
-  type: CLEAR_ERRORS,
-});
-
+export function clearErrors() {
+  return (dispatch: Dispatch<Action<ActionType>>): void => {
+    dispatch({
+      type: CLEAR_ERRORS,
+    });
+  };
+}
 
 /**
  * Reducers
  */
-export function errorsReducer(types: ActionTypeMap = {}): Reducer {
-  return (state: ErrorsState = {}, action: Action): ErrorsState => {
+export function errorsReducer(
+  types: ActionTypeMap = {}
+): Reducer<ErrorsState, ErrorAction> {
+  return (
+    state: ErrorsState = {},
+    action: ErrorAction
+  ): ErrorsState => {
     const { error, type } = action;
 
     // Reset state.
@@ -94,8 +102,13 @@ export function errorsReducer(types: ActionTypeMap = {}): Reducer {
   };
 }
 
-export function requestsReducer(types: ActionTypeMap = {}): Reducer {
-  return (state: RequestsState = {}, action: Action): RequestsState => {
+export function requestsReducer(
+  types: ActionTypeMap = {}
+): Reducer<RequestsState, Action<ActionType>> {
+  return (
+    state: RequestsState = {},
+    action: Action<ActionType>
+  ): RequestsState => {
     const { type } = action;
 
     // Filter out any actions that are not whitelisted.
