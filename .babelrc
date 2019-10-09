@@ -18,6 +18,8 @@
       ],
       "ignore": [
         "**/__tests__/*",
+        "**/*.test.js",
+        "**/types.js",
       ],
     },
     "es": {
@@ -26,6 +28,8 @@
       ],
       "ignore": [
         "**/__tests__/*",
+        "**/*.test.js",
+        "**/types.js",
       ],
     },
     "test": {

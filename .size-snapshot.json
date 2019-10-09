@@ -1,12 +1,12 @@
 {
   "dist/redux-utils.js": {
-    "bundled": 3904,
-    "minified": 1591,
-    "gzipped": 763
+    "bundled": 3878,
+    "minified": 1584,
+    "gzipped": 762
   },
   "dist/redux-utils.min.js": {
-    "bundled": 3904,
-    "minified": 1591,
-    "gzipped": 763
+    "bundled": 3878,
+    "minified": 1584,
+    "gzipped": 762
   }
 }
