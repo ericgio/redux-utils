@@ -1,7 +1,7 @@
 const babel = require('rollup-plugin-babel');
 const commonjs = require('rollup-plugin-commonjs');
 const nodeResolve = require('rollup-plugin-node-resolve');
-const replace = require('rollup-plugin-replace');
+const replace = require('@rollup/plugin-replace');
 const { sizeSnapshot } = require('rollup-plugin-size-snapshot');
 const { uglify } = require('rollup-plugin-uglify');
 
