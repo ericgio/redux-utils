@@ -3,11 +3,22 @@
 import type { Action, Dispatch, Reducer } from 'redux';
 import type { ActionType, ActionTypeMap, ErrorAction, ErrorsState, RequestsState, Types } from './types';
 
+// TODO: Make this an enum?
+type Status = boolean | typeof undefined;
+
 /**
  * Constants/ActionTypes
  */
 const CLEAR_ERRORS = 'CLEAR_ERRORS';
 
+function checkStatus(
+  requests: RequestsState,
+  types: Types,
+  status: Status
+): boolean {
+  const typeArr = typeof types === 'string' ? [types] : types;
+  return typeArr.every((type) => requests[type] === status);
+}
 
 /**
  * Util Functions
@@ -32,13 +43,16 @@ export function isErrorType(type: ActionType): boolean {
   return type.indexOf('ERROR') > -1;
 }
 
+export function isUninitiated(requests: RequestsState, types: Types): boolean {
+  return checkStatus(requests, types, undefined);
+}
+
 export function isComplete(requests: RequestsState, types: Types): boolean {
-  const requestTypes = typeof types === 'string' ? [types] : types;
-  return requestTypes.every((type) => !requests[type]);
+  return checkStatus(requests, types, false);
 }
 
 export function isPending(requests: RequestsState, types: Types): boolean {
-  return !isComplete(requests, types);
+  return checkStatus(requests, types, true);
 }
 
 function reduceActionTypes(

@@ -7,6 +7,7 @@ import {
   isComplete,
   isErrorType,
   isPending,
+  isUninitiated,
   errorsReducer,
   requestsReducer,
 } from '.';
@@ -17,6 +18,7 @@ const SUCCESS_TYPE = 'BASE_TYPE_SUCCESS';
 
 const TYPES = genActionTypes([BASE_TYPE]);
 
+const uninitiated = {};
 const pending = { [BASE_TYPE]: true };
 const completed = { [BASE_TYPE]: false };
 
@@ -47,15 +49,22 @@ describe('actionTypes utils', () => {
     expect(isErrorType(SUCCESS_TYPE)).toBe(false);
   });
 
+  test('determines whether a request is uninitiated', () => {
+    expect(isUninitiated(pending, BASE_TYPE)).toBe(false);
+    expect(isUninitiated(completed, BASE_TYPE)).toBe(false);
+    expect(isUninitiated(uninitiated, BASE_TYPE)).toBe(true);
+  });
+
   test('determines whether a request is complete', () => {
-    expect(isComplete(completed, BASE_TYPE)).toBe(true);
-    expect(isComplete(completed, [BASE_TYPE])).toBe(true);
+    expect(isComplete(uninitiated, BASE_TYPE)).toBe(false);
     expect(isComplete(pending, BASE_TYPE)).toBe(false);
+    expect(isComplete(completed, BASE_TYPE)).toBe(true);
   });
 
   test('determines whether a request is pending', () => {
-    expect(isPending(pending, BASE_TYPE)).toBe(true);
+    expect(isPending(uninitiated, BASE_TYPE)).toBe(false);
     expect(isPending(completed, BASE_TYPE)).toBe(false);
+    expect(isPending(pending, BASE_TYPE)).toBe(true);
   });
 
   test('generates success and error types for an array of base types', () => {
