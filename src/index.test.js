@@ -1,4 +1,5 @@
 import {
+  clearErrors,
   genActionTypes,
   getBaseType,
   getErrorType,
@@ -82,6 +83,14 @@ describe('actionTypes utils', () => {
       expect(willThrow).toThrow();
     }
   );
+
+  test(
+    '`clearErrors` throws an error when it receives non-string keys',
+    () => {
+      const willThrow = () => clearErrors(['FOO', 'BAR']);
+      expect(willThrow).toThrow();
+    }
+  );
 });
 
 describe('errorsReducer', () => {
@@ -89,10 +98,26 @@ describe('errorsReducer', () => {
   let state;
 
   beforeEach(() => {
-    reducer = errorsReducer(TYPES);
+    reducer = errorsReducer(genActionTypes([
+      'TYPE_ONE',
+      'TYPE_TWO',
+      'TYPE_THREE',
+    ]));
+
     state = {
-      [BASE_TYPE]: { message: 'This is an error.' },
+      TYPE_ONE: { message: 'This is error one.' },
+      TYPE_TWO: { message: 'This is error two.' },
     };
+  });
+
+  test('clears specified errors', () => {
+    const action = {
+      keys: ['TYPE_ONE'],
+      type: 'CLEAR_ERRORS',
+    };
+    expect(reducer(state, action)).toEqual({
+      TYPE_TWO: { message: 'This is error two.' },
+    });
   });
 
   test('clears all errors', () => {
@@ -100,19 +125,29 @@ describe('errorsReducer', () => {
     expect(reducer(state, action)).toEqual({});
   });
 
-  test('returns the existing state', () => {
-    expect(reducer(state, { type: 'FOO' })).toEqual(state);
-    expect(reducer(state, { type: BASE_TYPE })).toEqual(state);
-  });
+  test(
+    'returns the existing state if the action type is not whitelisted',
+    () => {
+      expect(reducer(state, { type: 'FOO_ERROR' })).toEqual(state);
+    }
+  );
+
+  test(
+    'returns the existing state if the action type is not an error',
+    () => {
+      expect(reducer(state, { type: 'TYPE_ONE' })).toEqual(state);
+    }
+  );
 
   test('updates the state with a new error', () => {
     const action = {
-      error: { message: 'This is an error.' },
-      type: ERROR_TYPE,
+      error: { message: 'This is error three.' },
+      type: 'TYPE_THREE_ERROR',
     };
 
-    expect(reducer({}, action)).toEqual({
-      [BASE_TYPE]: action.error,
+    expect(reducer(state, action)).toEqual({
+      ...state,
+      TYPE_THREE: action.error,
     });
   });
 

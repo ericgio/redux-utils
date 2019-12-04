@@ -9,7 +9,8 @@ export type ActionTypeMap = {
 };
 
 export type ErrorAction = Action<ActionType> & {
-  error: Error,
+  error?: Error,
+  keys: string[],
 };
 
 export type ErrorsState = {

@@ -79,9 +79,18 @@ export function genActionTypes(types: ActionType[]): ActionTypeMap {
 /**
  * Action Creators
  */
-export function clearErrors() {
+export function clearErrors(...keys: mixed[]) {
+  keys.forEach((key: mixed) => {
+    if (typeof key !== 'string') {
+      throw Error(
+        `\`clearErrors\` expects string arguments, but received ${typeof key}.`
+      );
+    }
+  });
+
   return (dispatch: Dispatch<Action<ActionType>>): void => {
     dispatch({
+      keys,
       type: CLEAR_ERRORS,
     });
   };
@@ -101,7 +110,15 @@ export function errorsReducer(
 
     // Reset state.
     if (type === CLEAR_ERRORS) {
-      return {};
+      // If no action types are specified, clear all the errors.
+      if (!(action.keys && action.keys.length)) {
+        return {};
+      }
+
+      // Otherwise, clear just the specified keys.
+      const newState = { ...state };
+      action.keys.forEach((key: string) => { delete newState[key]; });
+      return newState;
     }
 
     // Ignore any actions that are not whitelisted or are not errors.
